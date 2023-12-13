@@ -16,8 +16,11 @@ class WebhooksService {
                     const regex = /DGUPAYMENT-(\d+)/;
                     const match = transaction.description.match(regex);
                     const userId = match ? match[1] : null;
+                    const currentTransaction = await TransactionModel.findOne({
+                        cassoTransactionId: transaction.id,
+                    }).session(session);
 
-                    if (!userId) {
+                    if (!userId || currentTransaction) {
                         return null;
                     }
 
@@ -30,7 +33,12 @@ class WebhooksService {
                         { upsert: true, new: true, session },
                     );
 
-                    const { error, value } = transactionValidation(transaction);
+                    const { error, value } = transactionValidation({
+                        cassoTransactionId: transaction.id,
+                        bankTransactionId: transaction.tid,
+                        cash: transaction.amount,
+                        userId,
+                    });
 
                     if (error) throw new BAD_REQUEST(error.details[0].message, 99);
 
@@ -46,6 +54,7 @@ class WebhooksService {
             session.endSession();
 
             const updatedUsage = updatedUsageArray.filter((usage) => usage !== null);
+            console.log({ updatedUsage });
 
             return { updatedUsage };
         } catch (error) {
