@@ -1,32 +1,33 @@
-import { ConnectOptions } from "mongoose";
-import * as mongoose from "mongoose";
-import { databaseName, userName, password, ip, port } from "@/configs/config.mongodb";
+import mongoose, { ConnectOptions } from "mongoose";
 
-const connectString = `mongodb://localhost:27017`;
+const userName = "luanht21it";
+const password = "@password27";
+const cluster = "cluster0";
+const databaseName = "dgu-extension";
 
-console.log("Connection URL :", connectString);
+const connectString = `mongodb+srv://luanht21it:hoangtheluan123@cluster0.xuza17y.mongodb.net/dgu-extension?retryWrites=true&w=majority`;
 
 class Database {
     private static instance: Database;
-    constructor() {
+
+    private constructor() {
         this.connect();
     }
 
-    connect(type = "mongoose") {
-        if (1 === 1) {
-            mongoose.set("debug", true);
-            mongoose.set("debug", { color: true });
-        }
+    private connect() {
+        mongoose.set("debug", true);
+        mongoose.set("debug", { color: true });
         mongoose
             .connect(connectString, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                dbName: databaseName,
             } as ConnectOptions)
             .then(() => {
-                console.log("Connected MongoDB Success");
+                console.log("Connected to MongoDB successfully");
             })
-            .catch((err) => console.log("Error Connect !!!"));
+            .catch((err) => {
+                console.error("Error connecting to MongoDB:", err);
+            });
     }
 
     static getInstance() {
