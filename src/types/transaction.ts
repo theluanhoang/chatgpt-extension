@@ -9,6 +9,6 @@ export interface ITransaction {
 export interface IRequestSaveTransaction {
     userId: string;
     cash: number;
-    cassoTransactionId: string;
+    cassoTransactionId: number;
     bankTransactionId: string;
 }
