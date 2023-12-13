@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  nginx:
+    ports:
+      - "80:80"
+  node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    env_file:
+      - .env
+
+  mongo:
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "27017:27017"
