@@ -3,6 +3,8 @@ import { IRequestTransaction, IUsage } from "@/types";
 
 class WebhooksService {
     handleBankTransfer = async (transactions: IRequestTransaction[]) => {
+        console.log("transactions: ", transactions);
+
         const updatedUsageArray: (IUsage | null)[] = await Promise.all(
             transactions.map(async (transaction) => {
                 const regex = /DGUPAYMENT-(\d+)/;
@@ -10,6 +12,9 @@ class WebhooksService {
                 const userId = match ? match[1] : null;
 
                 if (userId) {
+                    console.log("userId: ", userId);
+                    console.log("transaction: ", transaction);
+
                     return await UsageModel.findOneAndUpdate(
                         { userId },
                         { $inc: { cash: transaction.amount } },

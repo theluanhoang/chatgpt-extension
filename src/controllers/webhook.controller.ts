@@ -4,10 +4,16 @@ import { Request, Response } from "express";
 
 class WebhookController {
     handleBankTransfer = async (req: Request, res: Response) => {
-        new OK({
+        console.log("webhooks controllers");
+
+        // return new OK({
+        //     message: "Handle Bank Transfer Successfully",
+        //     metaData: await WebhooksService.handleBankTransfer(req.body.data),
+        // }).send(res);
+        return res.status(200).json({
             message: "Handle Bank Transfer Successfully",
             metaData: await WebhooksService.handleBankTransfer(req.body.data),
-        }).send(res);
+        });
     };
 }
 
