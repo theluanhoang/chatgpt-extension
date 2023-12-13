@@ -2,7 +2,7 @@ import { ConnectOptions } from "mongoose";
 import * as mongoose from "mongoose";
 import { databaseName, userName, password, ip, port } from "@/configs/config.mongodb";
 
-const connectString = `mongodb://${userName}:${password}@${ip}:${port}`;
+const connectString = `mongodb://localhost:27017`;
 
 console.log("Connection URL :", connectString);
 
