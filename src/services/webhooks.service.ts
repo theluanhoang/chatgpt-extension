@@ -15,7 +15,8 @@ class WebhooksService {
                 transactions.map(async (transaction) => {
                     const regex = /DGUPAYMENT-(\d+)/;
                     const match = transaction.description.match(regex);
-                    const userId = match ? match[1] : null;
+                    const userId = "117216681423771053882";
+
                     const currentTransaction = await TransactionModel.findOne({
                         cassoTransactionId: transaction.id,
                     }).session(session);
@@ -59,6 +60,8 @@ class WebhooksService {
             return { updatedUsage };
         } catch (error) {
             await session.abortTransaction();
+            console.log("error: ", error);
+
             throw new BAD_REQUEST();
         } finally {
             session.endSession();
