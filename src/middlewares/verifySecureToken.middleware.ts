@@ -6,7 +6,6 @@ import { NextFunction, Request, Response } from "express";
 
 export const verifySecureTokenMiddleware = handleError(async (req: Request, res: Response, next: NextFunction) => {
     const secureToken = req.headers[HEADER.SECURE_TOKEN];
-    console.log("secureToken: ", secureToken);
 
     if (!secureToken) {
         throw new UNAUTHORIZED("Missing secure token");
