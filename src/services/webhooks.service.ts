@@ -45,7 +45,7 @@ class WebhooksService {
 
                     console.log("value: ", value);
 
-                    // await TransactionService.saveTransaction(value, session);
+                    await TransactionService.saveTransaction(value, session);
 
                     return updatedUsage;
                 }),
@@ -55,7 +55,6 @@ class WebhooksService {
             session.endSession();
 
             const updatedUsage = updatedUsageArray.filter((usage) => usage !== null);
-            console.log({ updatedUsage });
 
             return { updatedUsage };
         } catch (error) {
