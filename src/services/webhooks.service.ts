@@ -28,17 +28,11 @@ class WebhooksService {
                     console.log("userId: ", userId);
                     console.log("transaction: ", transaction);
 
-                    const updatedUsage = await UsageModel.updateOne(
+                    const updatedUsage = await UsageModel.findOneAndUpdate(
                         { userId },
                         { $inc: { cash: transaction.amount } },
                         { upsert: true, new: true, session },
                     );
-
-                    // const updatedUsage = await UsageModel.findOneAndUpdate(
-                    //     { userId },
-                    //     { $inc: { cash: transaction.amount } },
-                    //     { upsert: true, new: true, session },
-                    // );
 
                     const { error, value } = transactionValidation({
                         cassoTransactionId: transaction.id,
