@@ -7,8 +7,8 @@ import mongoose from "mongoose";
 
 class WebhooksService {
     handleBankTransfer = async (transactions: IRequestTransaction[]) => {
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        // const session = await mongoose.startSession();
+        // session.startTransaction();
 
         try {
             const updatedUsageArray: (IUsage | null)[] = await Promise.all(
@@ -19,7 +19,7 @@ class WebhooksService {
 
                     const currentTransaction = await TransactionModel.findOne({
                         cassoTransactionId: transaction.id,
-                    }).session(session);
+                    });
 
                     if (!userId || currentTransaction) {
                         return null;
@@ -31,7 +31,7 @@ class WebhooksService {
                     const updatedUsage = await UsageModel.findOneAndUpdate(
                         { userId },
                         { $inc: { cash: transaction.amount } },
-                        { upsert: true, new: true, session },
+                        { upsert: true, new: true },
                     );
 
                     const { error, value } = transactionValidation({
@@ -45,25 +45,25 @@ class WebhooksService {
 
                     console.log("value: ", value);
 
-                    await TransactionService.saveTransaction(value, session);
+                    await TransactionService.saveTransaction(value);
 
                     return updatedUsage;
                 }),
             );
 
-            await session.commitTransaction();
-            session.endSession();
+            // await session.commitTransaction();
+            // session.endSession();
 
             const updatedUsage = updatedUsageArray.filter((usage) => usage !== null);
 
             return { updatedUsage };
         } catch (error) {
-            await session.abortTransaction();
+            // await session.abortTransaction();
             console.log("error: ", error);
 
             throw new BAD_REQUEST();
         } finally {
-            session.endSession();
+            // session.endSession();
         }
     };
 }
