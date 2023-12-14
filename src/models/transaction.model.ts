@@ -8,7 +8,7 @@ const transactionSchema: Schema = new Schema<ITransaction>(
     {
         userId: {
             type: String,
-            require: true,
+            required: true,
         },
         cash: {
             type: Number,
@@ -16,13 +16,11 @@ const transactionSchema: Schema = new Schema<ITransaction>(
         },
         cassoTransactionId: {
             type: String,
-            require: true,
-            unique: true,
+            required: true,
         },
         bankTransactionId: {
             type: String,
-            require: true,
-            unique: true,
+            required: true,
         },
     },
     {

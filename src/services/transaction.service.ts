@@ -5,7 +5,7 @@ import { ClientSession } from "mongoose";
 
 class TransactionsService {
     saveTransaction = async (transactionData: IRequestSaveTransaction, session: ClientSession | null = null) => {
-        const currentTransaction = await TransactionModel.findOne({
+        const currentTransaction = await TransactionModel.find({
             cassoTransactionId: transactionData.cassoTransactionId,
             bankTransactionId: transactionData.bankTransactionId,
         }).session(session);
@@ -13,6 +13,7 @@ class TransactionsService {
         if (currentTransaction) throw new BAD_REQUEST("Transaction is exists");
 
         const newTransaction = new TransactionModel(transactionData);
+        console.log("helllo: ", newTransaction);
 
         const savedTransaction = await newTransaction.save({ session });
 
